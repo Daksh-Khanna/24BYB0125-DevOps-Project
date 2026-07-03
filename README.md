@@ -99,8 +99,6 @@ The implementation includes:
 │   ├── css/
 │   │   └── style.css
 │   │
-│   ├── images/
-│   │
 │   ├── js/
 │   │   └── main.js
 │   │

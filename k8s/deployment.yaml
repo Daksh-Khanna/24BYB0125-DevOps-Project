@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: portfolio
-          image: yourdockerhubuser/online-portfolio:latest
+          image: dakshkhanna/online-portfolio:latest
           ports:
             - containerPort: 80
           resources:

@@ -1,112 +1,310 @@
-# Online Portfolio Website — DevOps Pipeline (Use Case 3)
+# 🚀 Online Portfolio Website - DevOps Pipeline
 
-A multi-client web design portfolio site with a full DevOps pipeline:
-**Git → Jenkins → Docker → Kubernetes → Nagios + Graphite + Grafana**
+A complete end-to-end DevOps implementation for deploying and monitoring a static portfolio website using GitHub, Jenkins, Docker, Kubernetes, Nagios, Graphite, Grafana, and Telegraf.
 
-> **Running on Windows?** See `SETUP_GUIDE.md` for a Windows-specific walkthrough
-> (Docker Desktop + built-in Kubernetes, native Jenkins, and Nagios/Graphite/Grafana as
-> Docker containers). The `Jenkinsfile` in this repo already uses `bat` steps for Windows.
+This project was developed as part of the **DevOps Assignment – Use Case 3** at **VIT Vellore**.
 
 ---
 
-## 1. Project Structure
+# 📖 Project Overview
+
+This project demonstrates a complete CI/CD workflow for an online portfolio website.
+
+The implementation includes:
+
+- Source Code Management using GitHub
+- Continuous Integration using Jenkins
+- Docker Containerization
+- Docker Hub Image Repository
+- Kubernetes Deployment
+- Website Availability Monitoring using Nagios
+- Infrastructure Metrics Collection using Telegraf & Graphite
+- Dashboard Visualization using Grafana
+
+---
+
+# 🏗️ Architecture
 
 ```
-portfolio-project/
-├── src/                     # Static website (HTML/CSS/JS)
+                     GitHub
+                        │
+                        ▼
+                   Jenkins CI
+                        │
+                        ▼
+               Docker Image Build
+                        │
+                        ▼
+                  Docker Hub
+                        │
+                        ▼
+                  Kubernetes
+                        │
+                        ▼
+               Portfolio Website
+                        │
+        ┌───────────────┴───────────────┐
+        ▼                               ▼
+     Nagios                     Telegraf Agent
+(Availability Check)                  │
+                                      ▼
+                                 Graphite
+                                      │
+                                      ▼
+                                   Grafana
+```
+
+---
+
+# 🛠️ Tech Stack
+
+- HTML5
+- CSS3
+- JavaScript
+- Nginx
+- Git
+- GitHub
+- Jenkins
+- Docker
+- Docker Hub
+- Kubernetes (Docker Desktop)
+- Nagios
+- Graphite
+- Grafana
+- Telegraf
+
+---
+
+# 📂 Project Structure
+
+```
+24BYB0125-DevOps-Project
+│
+├── src/
 │   ├── index.html
-│   ├── health.html          # used by Nagios / Docker HEALTHCHECK
-│   ├── css/style.css
-│   └── js/main.js
-├── Dockerfile
-├── nginx.conf                # custom nginx config (adds /health, /nginx_status)
-├── Jenkinsfile                # CI/CD pipeline definition
+│   ├── health.html
+│   ├── css/
+│   └── js/
+│
 ├── k8s/
-│   ├── deployment.yaml        # 3-replica Deployment with probes
-│   └── service.yaml           # NodePort Service (port 30080)
+│   ├── deployment.yaml
+│   └── service.yaml
+│
 ├── monitoring/
-│   ├── nagios/portfolio.cfg           # host + service checks
-│   ├── graphite/collectd.conf         # feeds infra metrics to Carbon
-│   ├── graphite/push_nginx_metrics.sh # feeds nginx metrics to Carbon
-│   └── grafana/portfolio-dashboard.json
-└── README.md
+│   └── portfolio.cfg
+│
+├── Dockerfile
+├── Jenkinsfile
+├── nginx.conf
+├── README.md
+└── portfolio-dashboard.json
 ```
 
-## 2. Step-by-Step Implementation
+---
 
-### Step 1 — Version Control (Git/GitHub)
+# ✨ Features
+
+- Static portfolio website hosted using Nginx
+- Automated Docker image build
+- Docker Hub image repository
+- Kubernetes deployment with 3 replicas
+- Rolling updates
+- Docker Health Check
+- Kubernetes Readiness Probe
+- Kubernetes Liveness Probe
+- Website monitoring using Nagios
+- Infrastructure metrics collection using Telegraf
+- Metrics storage using Graphite
+- Resource utilization dashboards using Grafana
+
+---
+
+# 📋 Prerequisites
+
+Before running the project, install:
+
+- Git
+- Docker Desktop (Kubernetes Enabled)
+- Jenkins
+- kubectl
+- Docker Hub Account
+- Nagios
+- Graphite
+- Grafana
+- Telegraf
+
+---
+
+# ⚙️ Jenkins Pipeline
+
+The Jenkins pipeline performs the following stages:
+
+1. Validate Project Files
+2. Build Docker Image
+3. Push Docker Image to Docker Hub
+
+---
+
+# 🐳 Docker
+
+Build the Docker image
+
 ```bash
-git init
-git add .
-git commit -m "Initial commit: portfolio site + DevOps pipeline"
-git branch -M main
-git remote add origin https://github.com/<yourusername>/<RegisterNumber>-DevOps-Project.git
-git push -u origin main
+docker build -t dakshkhanna/online-portfolio:latest .
 ```
-Take a screenshot of the GitHub repo page showing all files pushed.
 
-### Step 2 — Jenkins Automated Build
-1. Install Jenkins, then install the **Docker Pipeline** and **Kubernetes CLI** plugins.
-2. Add credentials in Jenkins: `dockerhub-creds` (Docker Hub username/password) and
-   `kubeconfig-file` (secret file — your cluster's kubeconfig).
-3. Create a new Pipeline job → point it at this repo → it will auto-detect the `Jenkinsfile`.
-4. Click **Build Now**.
-5. Screenshot the Jenkins Dashboard, the Job Configuration page, the Console Output, and the
-   final "Success" build status (all four are required if Jenkins is local).
+Push the image
 
-### Step 3 — Docker Build & Run (manual verification, optional if Jenkins already did it)
 ```bash
-docker build -t <yourdockerhubuser>/online-portfolio:latest .
-docker run -d -p 8080:80 --name portfolio-test <yourdockerhubuser>/online-portfolio:latest
-# Visit http://localhost:8080
-docker push <yourdockerhubuser>/online-portfolio:latest
+docker push dakshkhanna/online-portfolio:latest
 ```
-Screenshot: `docker images`, `docker ps` (container running), and the browser showing the site.
 
-### Step 4 — Kubernetes Deployment
+---
+
+# ☸️ Kubernetes Deployment
+
+Deploy the application
+
 ```bash
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f k8s/service.yaml
-kubectl get pods -l app=portfolio
-kubectl get svc portfolio-service
 ```
-Access the site at `http://<node-ip>:30080` (or `http://localhost:30080` on minikube with
-`minikube service portfolio-service`).
-Screenshot: `kubectl get pods` and `kubectl get svc` both showing **Running**, and the browser output.
 
-### Step 5 — Nagios Monitoring
+Verify Deployment
+
 ```bash
-sudo cp monitoring/nagios/portfolio.cfg /usr/local/nagios/etc/objects/
-# add: cfg_file=/usr/local/nagios/etc/objects/portfolio.cfg  to nagios.cfg
-sudo systemctl restart nagios
+kubectl get pods
 ```
-Open the Nagios web UI → Services → confirm **Host UP** and **HTTP Website / PING / Docker
-Daemon** services are **OK**. Screenshot this page.
 
-### Step 6 — Graphite Metrics
+Verify Service
+
 ```bash
-# On the monitored host/node:
-sudo apt install collectd
-sudo cp monitoring/graphite/collectd.conf /etc/collectd/collectd.conf
-sudo systemctl restart collectd
-
-# Cron job (every minute) to push nginx metrics:
-* * * * * /path/to/monitoring/graphite/push_nginx_metrics.sh http://localhost:30080/nginx_status <graphite-host> 2003
+kubectl get svc
 ```
-Open Graphite's web UI (`http://<graphite-host>:8080`) → Metrics tree → expand `portfolio.*` →
-confirm data points are arriving. Screenshot the graph.
 
-### Step 7 — Grafana Dashboard
-1. In Grafana, add a **Graphite** data source pointing at your Graphite server.
-2. Dashboards → Import → upload `monitoring/grafana/portfolio-dashboard.json`.
-3. Select the Graphite data source when prompted.
-4. Confirm panels for CPU, Memory, Network Traffic, Nginx Connections, and Uptime populate
-   with live data. Screenshot the dashboard.
+Port Forward
 
-## 3. Expected Final Output Checklist
-- [ ] Website deployed successfully
-- [ ] Kubernetes Pods Running (3/3)
-- [ ] Website accessible via browser (NodePort 30080)
-- [ ] Nagios: Host UP, Services OK
-- [ ] Graphite: receiving `portfolio.*` metrics
-- [ ] Grafana: dashboard rendering all panels
+```bash
+kubectl port-forward service/portfolio-service 8085:80
+```
+
+---
+
+# 🌐 Local URLs
+
+| Service | URL |
+|---------|-----|
+| Portfolio Website | http://localhost:8085 |
+| Jenkins | http://localhost:8080 |
+| Nagios | http://localhost:8081 |
+| Graphite | http://localhost:8082 |
+| Grafana | http://localhost:3000 |
+
+---
+
+# 📊 Monitoring
+
+## Nagios
+
+Monitors:
+
+- Host Availability
+- HTTP Health Check
+
+Health Endpoint
+
+```
+/health.html
+```
+
+---
+
+## Graphite
+
+Stores infrastructure metrics collected using Telegraf.
+
+Collected metrics include:
+
+- CPU Usage
+- Memory Usage
+- Disk Usage
+- System Uptime
+
+---
+
+## Grafana
+
+Displays dashboards for:
+
+- CPU Usage
+- Memory Usage
+- Disk Usage
+- System Uptime
+
+---
+
+# 📦 Docker Image
+
+Repository
+
+```
+dakshkhanna/online-portfolio
+```
+
+Tag
+
+```
+latest
+```
+
+Docker Hub
+
+https://hub.docker.com/r/dakshkhanna/online-portfolio
+
+---
+
+# 📷 Project Demonstration
+
+The project demonstrates:
+
+- GitHub Repository
+- Jenkins CI Pipeline
+- Docker Image Creation
+- Docker Hub Repository
+- Kubernetes Deployment
+- Running Portfolio Website
+- Nagios Monitoring
+- Graphite Metrics Collection
+- Grafana Dashboards
+
+---
+
+# 📌 Assignment Mapping
+
+| Requirement | Status |
+|-------------|--------|
+| GitHub Repository | ✅ |
+| Automated Jenkins Pipeline | ✅ |
+| Docker Containerization | ✅ |
+| Docker Hub Image | ✅ |
+| Kubernetes Deployment | ✅ |
+| Website Deployment | ✅ |
+| Website Availability Monitoring | ✅ |
+| Infrastructure Metrics Collection | ✅ |
+| Dashboard Visualization | ✅ |
+
+---
+
+# 👨‍💻 Author
+
+**Daksh Khanna**
+
+Registration Number: **24BYB0125**
+
+VIT Vellore
+
+---
+
+# 📄 License
+
+This project was developed for academic purposes as part of the **DevOps Assignment – Use Case 3** at **VIT Vellore**.

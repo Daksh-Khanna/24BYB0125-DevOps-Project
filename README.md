@@ -1,4 +1,4 @@
-# 🚀 Online Portfolio Website – DevOps CI/CD Pipeline
+# 🚀 Online Portfolio Website - DevOps CI/CD Pipeline
 
 ![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker&logoColor=white)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-Deployed-326CE5?logo=kubernetes&logoColor=white)
@@ -7,22 +7,22 @@
 ![Graphite](https://img.shields.io/badge/Graphite-Metrics-5C2D91)
 ![Grafana](https://img.shields.io/badge/Grafana-Dashboard-F46800?logo=grafana&logoColor=white)
 
-A complete DevOps implementation of an **Online Portfolio Website** demonstrating Continuous Integration, Containerization, Kubernetes Deployment, Website Monitoring, Infrastructure Metrics Collection, and Dashboard Visualization.
+A complete end-to-end DevOps implementation for deploying and monitoring a static portfolio website using GitHub, Jenkins, Docker, Kubernetes, Nagios, Telegraf, Graphite, and Grafana.
 
-This project was developed for **DevOps Assignment 2 – Use Case 3** at **VIT Vellore**.
+This project was developed as part of **DevOps Assignment 2 – Use Case 3** at **VIT Vellore**.
 
 ---
 
-# 📌 Project Overview
+# 📖 Project Overview
 
-This project implements a complete DevOps workflow for deploying and monitoring a static portfolio website.
+This project demonstrates a complete DevOps workflow for an online portfolio website.
 
-The pipeline includes:
+The implementation includes:
 
-- Source Code Management using GitHub
-- Automated Build using Jenkins
-- Docker Image Creation
-- Docker Hub Repository
+- Version Control using GitHub
+- Continuous Integration using Jenkins
+- Docker Containerization
+- Docker Hub Image Repository
 - Kubernetes Deployment
 - Website Availability Monitoring using Nagios
 - Infrastructure Metrics Collection using Telegraf
@@ -31,7 +31,7 @@ The pipeline includes:
 
 ---
 
-# 🏗️ Architecture
+# 🏗️ System Architecture
 
 ```text
                     GitHub
@@ -40,7 +40,7 @@ The pipeline includes:
                 Jenkins Pipeline
                        │
                        ▼
-                Docker Image Build
+               Docker Image Build
                        │
                        ▼
                   Docker Hub
@@ -49,17 +49,17 @@ The pipeline includes:
               Kubernetes Cluster
                        │
                        ▼
-            Online Portfolio Website
+             Online Portfolio Website
                        │
         ┌──────────────┴──────────────┐
         ▼                             ▼
     Nagios                     Telegraf
-(Availability)                     │
-                                   ▼
-                              Graphite
-                                   │
-                                   ▼
-                                Grafana
+(Availability Check)                │
+                                    ▼
+                               Graphite
+                                    │
+                                    ▼
+                                 Grafana
 ```
 
 ---
@@ -71,7 +71,7 @@ The pipeline includes:
 | Version Control | Git, GitHub |
 | CI/CD | Jenkins |
 | Containerization | Docker |
-| Image Repository | Docker Hub |
+| Container Registry | Docker Hub |
 | Web Server | Nginx |
 | Orchestration | Kubernetes |
 | Monitoring | Nagios |
@@ -85,20 +85,13 @@ The pipeline includes:
 # 📁 Project Structure
 
 ```text
-portfolio-project
+24BYB0125-DevOps-Project
 │
 ├── k8s/
 │   ├── deployment.yaml
 │   └── service.yaml
 │
 ├── monitoring/
-│   ├── grafana/
-│   │   └── portfolio-dashboard.json
-│   │
-│   ├── graphite/
-│   │   ├── collectd.conf
-│   │   └── push_nginx_metrics.sh
-│   │
 │   └── nagios/
 │       └── portfolio.cfg
 │
@@ -117,23 +110,58 @@ portfolio-project
 ├── Dockerfile
 ├── Jenkinsfile
 ├── nginx.conf
-└── README.md
+├── README.md
+└── .gitignore
 ```
+
 ---
 
-# ⚙️ CI/CD Pipeline
+# ✨ Features
 
-The Jenkins pipeline performs the following tasks:
+- Static portfolio website hosted using Nginx
+- Automated Docker image build using Jenkins
+- Docker Hub image repository
+- Kubernetes deployment with 3 replicas
+- Rolling Updates
+- Docker Health Check
+- Kubernetes Readiness Probe
+- Kubernetes Liveness Probe
+- Website monitoring using Nagios
+- Infrastructure metrics collection using Telegraf
+- Metrics storage using Graphite
+- Resource visualization using Grafana
 
-- ✅ Validate project files
-- ✅ Build Docker image
-- ✅ Push Docker image to Docker Hub
+---
+
+# 📋 Prerequisites
+
+Install the following before running the project:
+
+- Git
+- Docker Desktop (Kubernetes Enabled)
+- Jenkins
+- kubectl
+- Docker Hub Account
+- Nagios
+- Graphite
+- Grafana
+- Telegraf
+
+---
+
+# ⚙️ Jenkins Pipeline
+
+The Jenkins pipeline performs:
+
+- Validate project files
+- Build Docker image
+- Push Docker image to Docker Hub
 
 ---
 
 # 🐳 Docker
 
-Build the image
+Build the Docker image
 
 ```bash
 docker build -t dakshkhanna/online-portfolio:latest .
@@ -176,19 +204,7 @@ kubectl port-forward service/portfolio-service 8085:80
 
 ---
 
-# 🌐 Local Services
-
-| Service | URL |
-|---------|-----|
-| Portfolio Website | http://localhost:8085 |
-| Jenkins | http://localhost:8080 |
-| Nagios | http://localhost:8081 |
-| Graphite | http://localhost:8082 |
-| Grafana | http://localhost:3000 |
-
----
-
-# ❤️ Health Check
+# ❤️ Health Monitoring
 
 The application exposes a health endpoint used by:
 
@@ -197,26 +213,28 @@ The application exposes a health endpoint used by:
 - Kubernetes Liveness Probe
 - Nagios HTTP Monitoring
 
+Health Endpoint
+
 ```
 /health.html
 ```
 
 ---
 
-# 📊 Monitoring
+# 📊 Monitoring Stack
 
 ## Nagios
 
-Nagios continuously monitors:
+Monitors:
 
 - Host Availability
-- Website HTTP Status
+- Website HTTP Health
 
 ---
 
 ## Graphite
 
-Graphite stores infrastructure metrics collected by **Telegraf**.
+Stores infrastructure metrics collected using **Telegraf**.
 
 Metrics include:
 
@@ -229,9 +247,9 @@ Metrics include:
 
 ## Grafana
 
-Grafana visualizes the collected metrics.
+Visualizes infrastructure metrics using dashboards.
 
-Dashboard Panels
+Dashboard Panels:
 
 - CPU Usage
 - Memory Usage
@@ -240,33 +258,65 @@ Dashboard Panels
 
 ---
 
-# 📷 Screenshots
+# 🌐 Local Services
 
-The project includes the following demonstrations:
+| Service | URL |
+|---------|-----|
+| Portfolio Website | http://localhost:8085 |
+| Jenkins | http://localhost:8080 |
+| Nagios | http://localhost:8081 |
+| Graphite | http://localhost:8082 |
+| Grafana | http://localhost:3000 |
+
+---
+
+# 📦 Docker Image
+
+Repository
+
+```
+dakshkhanna/online-portfolio
+```
+
+Tag
+
+```
+latest
+```
+
+Docker Hub
+
+https://hub.docker.com/r/dakshkhanna/online-portfolio
+
+---
+
+# 📷 Project Demonstration
+
+This project demonstrates:
 
 - GitHub Repository
-- Jenkins Pipeline
-- Docker Image
-- Kubernetes Pods
-- Running Website
+- Jenkins CI/CD Pipeline
+- Docker Image Build
+- Kubernetes Deployment
+- Running Portfolio Website
 - Nagios Monitoring
-- Graphite Metrics
+- Graphite Metrics Collection
 - Grafana Dashboard
 
 ---
 
-# 📋 Assignment Requirements
+# ✅ Assignment Requirements
 
 | Requirement | Status |
 |------------|--------|
 | GitHub Repository | ✅ |
 | Jenkins Pipeline | ✅ |
-| Docker Container | ✅ |
+| Docker Containerization | ✅ |
 | Docker Hub Repository | ✅ |
 | Kubernetes Deployment | ✅ |
 | Website Deployment | ✅ |
 | Nagios Monitoring | ✅ |
-| Graphite Metrics | ✅ |
+| Graphite Metrics Collection | ✅ |
 | Grafana Dashboard | ✅ |
 
 ---
@@ -275,9 +325,9 @@ The project includes the following demonstrations:
 
 **Daksh Khanna**
 
-Registration Number: **24BYB0125**
+**Registration Number:** 24BYB0125
 
-VIT Vellore
+**Institution:** VIT Vellore
 
 GitHub: https://github.com/Daksh-Khanna
 

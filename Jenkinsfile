@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "dakshkhanna/online-portfolio"
+    }
+
     stages {
 
         stage('Validate') {
@@ -13,15 +17,30 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t online-portfolio:latest .'
+                bat 'docker build -t %IMAGE_NAME%:latest .'
             }
         }
 
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    bat '''
+                    echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                    docker push %IMAGE_NAME%:latest
+                    docker logout
+                    '''
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo 'Docker image built successfully!'
+            echo 'Docker image built and pushed successfully!'
         }
 
         failure {

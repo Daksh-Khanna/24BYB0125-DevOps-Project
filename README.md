@@ -85,28 +85,40 @@ The pipeline includes:
 # 📁 Project Structure
 
 ```text
-24BYB0125-DevOps-Project
-│
-├── src/
-│   ├── index.html
-│   ├── health.html
-│   ├── css/
-│   └── js/
+portfolio-project
 │
 ├── k8s/
 │   ├── deployment.yaml
 │   └── service.yaml
 │
 ├── monitoring/
-│   └── portfolio.cfg
+│   ├── grafana/
+│   │   └── portfolio-dashboard.json
+│   │
+│   ├── graphite/
+│   │   ├── collectd.conf
+│   │   └── push_nginx_metrics.sh
+│   │
+│   └── nagios/
+│       └── portfolio.cfg
+│
+├── src/
+│   ├── css/
+│   │   └── style.css
+│   │
+│   ├── images/
+│   │
+│   ├── js/
+│   │   └── main.js
+│   │
+│   ├── health.html
+│   └── index.html
 │
 ├── Dockerfile
 ├── Jenkinsfile
 ├── nginx.conf
-├── README.md
-└── .gitignore
+└── README.md
 ```
-
 ---
 
 # ⚙️ CI/CD Pipeline

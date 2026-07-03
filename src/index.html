@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PixelCraft Studio | Online Portfolio</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">PixelCraft<span>Studio</span></div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home" class="hero">
+    <h1>We Design Web Experiences That Convert</h1>
+    <p>A multi-client web design studio delivering fast, automated, always-on portfolio sites.</p>
+    <a href="#projects" class="btn">View Our Work</a>
+  </section>
+
+  <section id="projects" class="projects">
+    <h2>Client Projects</h2>
+    <div class="grid" id="project-grid">
+      <!-- populated by js/main.js -->
+    </div>
+  </section>
+
+  <section id="testimonials" class="testimonials">
+    <h2>What Clients Say</h2>
+    <div class="grid" id="testimonial-grid">
+      <!-- populated by js/main.js -->
+    </div>
+  </section>
+
+  <section id="services" class="services">
+    <h2>Our Services</h2>
+    <div class="grid">
+      <div class="card"><h3>Web Design</h3><p>Custom, responsive designs tailored to each brand.</p></div>
+      <div class="card"><h3>Branding</h3><p>Logo, color palette, and visual identity systems.</p></div>
+      <div class="card"><h3>Maintenance</h3><p>Continuous deployment keeps client sites always current.</p></div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Get In Touch</h2>
+    <p>Email us at hello@pixelcraftstudio.example to start your project.</p>
+    <p class="status" id="build-status">Build: <span id="build-id">loading...</span></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 PixelCraft Studio. Deployed via Jenkins &rarr; Docker &rarr; Kubernetes.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{
+  "title": "Online Portfolio - Infrastructure Dashboard",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "CPU Usage (%)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        { "target": "portfolio.cpu.percent-active" }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Memory Usage (Bytes)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [
+        { "target": "portfolio.memory.used" }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Network Traffic (Bytes/s)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "targets": [
+        { "target": "portfolio.interface.eth0.if_octets.rx" },
+        { "target": "portfolio.interface.eth0.if_octets.tx" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Nginx Active Connections",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "targets": [
+        { "target": "portfolio.nginx.active_connections" }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Website Uptime (Nagios via Graphite bridge)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 16 },
+      "targets": [
+        { "target": "portfolio.nagios.host_uptime_percent" }
+      ]
+    }
+  ]
+}
